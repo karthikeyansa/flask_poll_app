@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polls</title>
+</head>
+<body>
+<h1>polls</h1>
+<form action="{{ url_for('polls') }}" method="post">
+    Question&nbsp;<input type="text" name="question"><br>
+    Choice 1&nbsp;<input type="text" name="choice1"><br>
+    choice 2&nbsp;<input type="text" name="choice2"><br>
+    <input type="submit" name="submit" value="submit"><br>
+</form>
+{% if polls %}
+    {% for poll in polls %}
+    <ol type="1">
+    <form method="post" action="{{ url_for('poll',id = poll.id) }}">
+    <li>
+        {{ poll.question }}<br>
+        <input type="radio" name="choice" value="{{ poll.choice1 }}">{{ poll.choice1 }}<br>
+        <input type="radio" name="choice" value="{{ poll.choice2 }}">{{ poll.choice2 }}<br>
+        {% if not user.has_voted_poll(poll) %}
+            <input type="submit" value="submit" name="submit">
+        {% else %}
+        <h3>Already voted</h3>
+        {% endif %}
+    </li>
+    </form>
+    </ol>
+    {% endfor %}
+{% else %}
+<h1>No polls</h1>
+{% endif %}
+<a href="{{ url_for('logout') }}">logout</a>
+</body>
+</html>
